@@ -1,0 +1,32 @@
+import json
+import boto3
+import base64
+from datetime import datetime
+
+s3 = boto3.client('s3')
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('SensorSummary')
+
+S3_BUCKET = 'your-s3-bucket-name'
+
+def lambda_handler(event, context):
+    for record in event['Records']:
+        payload = base64.b64decode(record['kinesis']['data']).decode('utf-8')
+        data = json.loads(payload)
+
+        device_id = data['device_id']
+        temperature = data['temperature']
+        timestamp = datetime.utcnow().isoformat()
+
+        key = f"raw/{device_id}/{timestamp}.json"
+        s3.put_object(Bucket=S3_BUCKET, Key=key, Body=json.dumps(data))
+
+        table.update_item(
+            Key={'device_id': device_id},
+            UpdateExpression="SET last_temp = :temp, last_updated = :time",
+            ExpressionAttributeValues={
+                ':temp': temperature,
+                ':time': timestamp
+            }
+        )
+    return {'statusCode': 200, 'body': 'Data processed successfully'}
