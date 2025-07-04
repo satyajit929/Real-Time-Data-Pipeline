@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  KinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      ShardCount: 1
+      Name: SensorDataStream
+
+  RawDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: your-s3-bucket-name
+
+  SensorSummaryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: SensorSummary
+      AttributeDefinitions:
+        - AttributeName: device_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: device_id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: LambdaKinesisExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaPermissions
+          PolicyDocument:
+            Fn::Sub: ${file("iam/lambda_role_policy.json")}
+
+  StreamProcessorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: StreamProcessor
+      Runtime: python3.12
+      Handler: process_stream.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: your-code-bucket
+        S3Key: lambda/process_stream.zip
+      Events:
+        StreamEvent:
+          Type: Kinesis
+          Properties:
+            Stream: !GetAtt KinesisStream.Arn
+            StartingPosition: LATEST
+
