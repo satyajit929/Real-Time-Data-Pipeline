@@ -29,4 +29,5 @@ def lambda_handler(event, context):
                 ':time': timestamp
             }
         )
+
     return {'statusCode': 200, 'body': 'Data processed successfully'}
