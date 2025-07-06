@@ -10,39 +10,33 @@ This project demonstrates how to build a real-time data processing pipeline usin
 
 2) AWS Services Used
 
-   | Service        | Purpose                                                 |
-   |----------------|---------------------------------------------------------|
-   | Amazon Kinesis | Ingests real-time data (e.g., from IoT sensors)         |
-   | AWS Lambda     | Processes each data record as it arrives                |
-   | Amazon S3      | Stores raw data files (in JSON format)                  |
-   | DynamoDB       | Stores the latest temperature reading per device        |
-   | IAM            | Provides permissions for Lambda to access S3 & DynamoDB |
+       | Service        | Purpose                                                 |
+       |----------------|---------------------------------------------------------|
+       | Amazon Kinesis | Ingests real-time data (e.g., from IoT sensors)         |
+       | AWS Lambda     | Processes each data record as it arrives                |
+       | Amazon S3      | Stores raw data files (in JSON format)                  |
+       | DynamoDB       | Stores the latest temperature reading per device        |
+       | IAM            | Provides permissions for Lambda to access S3 & DynamoDB |
 
 3) Project Structure
 
-   real-time-pipeline/
-
-   ├── lambda/
-
-   │ └── process_stream.py # Python code for processing data
-
-   ├── iam/
-
-   │ └── lambda_role_policy.json # IAM permissions for the Lambda function
-
-   ├── cloudformation/
-
-   │ └── pipeline_stack.yaml # AWS CloudFormation to set up the infrastructure
-
-   └── README.md # Project documentation
+       real-time-pipeline/
+       ├── lambda/
+       │ └── process_stream.py # Python code for processing data
+       ├── iam/
+       │ └── lambda_role_policy.json # IAM permissions for the Lambda function
+       ├── cloudformation/
+       │ └── pipeline_stack.yaml # AWS CloudFormation to set up the infrastructure
+       └── README.md # Project documentation
 
 4) Sample Data (Sent to Kinesis)
 
-    ```json
-     {
-       "device_id": "sensor-123",
-       "temperature": 27.5
-     }
+    json
+   
+       {
+         "device_id": "sensor-123",
+         "temperature": 27.5
+       }
 
   This sample simulates a device sending temperature data.
 
