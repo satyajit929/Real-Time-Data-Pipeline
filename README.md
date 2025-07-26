@@ -1,14 +1,14 @@
-Real-Time AWS Data Processing Pipeline
+# Real-Time AWS Data Processing Pipeline
 
 This project demonstrates how to build a real-time data processing pipeline using AWS services. It's ideal for handling data from IoT sensors or any live data stream.
 
-1) What This Project Does
+## What This Project Does
 
    a) This pipeline receives "real-time sensor data", processes it, stores the "raw data in Amazon S3" and saves a "summary of the latest readings in DynamoDB".
 
    b) It’s a simplified version of what many companies use for real-time monitoring systems (e.g., smart homes, factory sensors, etc.).
 
-2) AWS Services Used
+## AWS Services Used
 
        | Service        | Purpose                                                 |
        |----------------|---------------------------------------------------------|
@@ -18,7 +18,7 @@ This project demonstrates how to build a real-time data processing pipeline usin
        | DynamoDB       | Stores the latest temperature reading per device        |
        | IAM            | Provides permissions for Lambda to access S3 & DynamoDB |
 
-3) Project Structure
+## Project Structure
 
        real-time-pipeline/
        ├── lambda/
@@ -29,7 +29,7 @@ This project demonstrates how to build a real-time data processing pipeline usin
        │ └── pipeline_stack.yaml # AWS CloudFormation to set up the infrastructure
        └── README.md # Project documentation
 
-4) Sample Data (Sent to Kinesis)
+## Sample Data (Sent to Kinesis)
 
     json
    
@@ -40,7 +40,7 @@ This project demonstrates how to build a real-time data processing pipeline usin
 
   This sample simulates a device sending temperature data.
 
-5) How It Works :
+## How It Works :
 
    1) Sensor or data source sends data to a Kinesis stream.
 
@@ -58,7 +58,7 @@ This project demonstrates how to build a real-time data processing pipeline usin
 
       b) Latest temperature per device in DynamoDB
 
-6) Deployment Instructions
+## Deployment Instructions
 
    You must have an AWS account with necessary permissions.
 
@@ -84,7 +84,7 @@ This project demonstrates how to build a real-time data processing pipeline usin
 
       a) Use the AWS Kinesis console or AWS CLI to send a test record like the one above.
 
-7)  Use Cases
+##  Use Cases
 
     1) IoT monitoring (temperature, pressure, location, etc.)
 
